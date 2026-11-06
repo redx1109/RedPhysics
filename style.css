@@ -331,3 +331,19 @@ footer p{max-width:70ch;margin:0 0 10px}
   .rv{opacity:1;transform:none}
   .orb,.gridlines,.glyph{transform:none!important}
 }
+
+.subblock{margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+.subblock:first-child{margin-top:0;padding-top:0;border-top:0}
+.subblock h5{font:500 10.5px var(--f-mono);letter-spacing:.13em;text-transform:uppercase;color:var(--red-2);margin:0 0 8px}
+.subblock p{margin:0;font-size:15px;line-height:1.65;color:var(--ink)}
+.subblock.pitfall{border-left:3px solid var(--red);padding-left:14px;margin-top:18px}
+.subblock.pitfall h5{color:var(--red)}
+.reflist,.problist{margin:0;padding-left:20px;font-size:14.5px;line-height:1.7;color:var(--ink)}
+.reflist li,.problist li{margin-bottom:4px}
+.reflist{list-style:none;padding-left:0}
+.reflist li{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+
+.fgroup-h .fprog{font:500 10px var(--f-mono);color:var(--muted);letter-spacing:.06em;
+  padding:1px 6px;border-radius:4px;border:1px solid var(--line);
+  background:var(--surface);margin-left:auto;text-transform:none;text-transform:none;
+  white-space:nowrap}
