@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RedPhysics — physics, from the ground up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#top"><span class="dot"></span>Red<em>Physics</em></a>
+    <nav>
+      <button class="nbtn" data-go="pathsec" type="button">The path</button>
+      <button class="nbtn" data-go="labsec" type="button">Lab bench</button>
+      <button class="nbtn" id="navSaved" type="button">Saved <span id="savedCount"></span></button>
+      <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle colour theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="scrollbar" id="scrollbar"></div>
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="orb o1" data-par="-0.13" data-mx="26" data-my="18"></div>
+    <div class="orb o2" data-par="0.2" data-mx="-30" data-my="-14"></div>
+    <div class="orb o3" data-par="0.1" data-mx="16" data-my="-22"></div>
+    <div class="gridlines" data-par="0.05"></div>
+    <span class="glyph" style="left:6%;top:20%" data-par="-0.26" data-mx="34" data-my="22">E = mc²</span>
+    <span class="glyph" style="left:78%;top:14%" data-par="-0.34" data-mx="-28" data-my="18">∇×B = μ₀J</span>
+    <span class="glyph" style="left:62%;top:62%" data-par="0.18" data-mx="22" data-my="-26">F = ma</span>
+    <span class="glyph" style="left:12%;top:74%" data-par="0.24" data-mx="-20" data-my="-16">iħ ∂ψ/∂t</span>
+    <span class="glyph" style="left:86%;top:44%" data-par="-0.2" data-mx="30" data-my="14">pV = NkT</span>
+  </div>
+
+  <div class="wrap hero-in">
+    <p class="eyebrow">A structured course · 13 tracks · 82 lessons</p>
+    <h1>Physics,<br><em>from the ground up.</em></h1>
+    <p class="lede">Most courses hand you a formula and hope for the best. RedPhysics shows you the rung below it. Every lesson names the maths it uses and the ideas it stands on — so the next thing to learn is always one you are already ready for, and you can see exactly what it unlocks.</p>
+    <div class="cta">
+      <button class="btn primary" id="startBtn" type="button">Start at the bottom</button>
+      <button class="btn" id="labBtn" type="button">Open the lab bench</button>
+      <button class="btn" id="savedBtn" type="button">Read what you saved</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count="82">0</b><span>Lessons</span></div>
+      <div class="stat"><b data-count="13">0</b><span>Tracks</span></div>
+      <div class="stat"><b data-count="8">0</b><span>Live simulations</span></div>
+      <div class="stat"><b data-count="4">0</b><span>Levels deep</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PATH ================= -->
+<section class="blk" id="pathsec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="kicker">The curriculum</p>
+        <h2>The path</h2>
+        <p>Read it bottom-up. Grey dot means waiting on a prerequisite. Hover any lesson to light up everything it depends on and everything it unlocks.</p>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="chiprow" id="levelChips" role="group" aria-label="Filter by level"></div>
+      <div class="chiprow" id="fieldChips" role="group" aria-label="Filter by track"></div>
+    </div>
+
+    <div class="nextup rv" id="nextup"></div>
+
+    <div class="progwrap">
+      <div class="ring">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle class="track" cx="32" cy="32" r="27"/>
+          <circle class="fill" id="ringFill" cx="32" cy="32" r="27" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+        </svg>
+        <b id="ringPct">0%</b>
+      </div>
+      <div class="progtext"><b id="progCount">0 of 82</b> lessons learned<br><span id="progSub">Tick a foundation to begin</span></div>
+    </div>
+
+    <div id="chapters"></div>
+  </div>
+</section>
+
+<!-- ================= LAB ================= -->
+<section class="blk" id="labsec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="kicker">The lab bench</p>
+        <h2>Push on it</h2>
+        <p>Eight simulations. Open one from a lesson and it arrives with the equation already on screen.</p>
+      </div>
+    </div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Choose a lab"></div>
+    <div class="lab" id="labmount">
+      <div class="stage">
+        <canvas id="cv" role="img" aria-label="Interactive simulation"></canvas>
+        <div class="formula" id="formula"></div>
+      </div>
+      <div class="panel">
+        <div class="labctx" id="labctx"></div>
+        <span class="lvl" id="lvl"></span>
+        <h3 id="ltitle"></h3>
+        <p id="blurb"></p>
+        <div id="controls"></div>
+        <div class="btns" id="btns"></div>
+        <div class="readouts" id="readouts"></div>
+        <p class="try"><b>Try this</b><span id="ltry"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONSTANTS ================= -->
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">Reference</p><h2>Constants</h2></div></div>
+    <div class="consts rv">
+      <div><b>299 792 458 m/s</b><span>c, speed of light</span></div>
+      <div><b>6.674×10⁻¹¹ N·m²/kg²</b><span>G, gravitation</span></div>
+      <div><b>6.626×10⁻³⁴ J·s</b><span>h, Planck</span></div>
+      <div><b>1.381×10⁻²³ J/K</b><span>k<sub>B</sub>, Boltzmann</span></div>
+      <div><b>1.602×10⁻¹⁹ C</b><span>e, elementary charge</span></div>
+      <div><b>9.80665 m/s²</b><span>g, standard gravity</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Simulations use simplified models: no air drag, no collisions between gas particles, point masses. Good for intuition, not for homework answers.</p>
+    <p>Progress and saved lessons are stored in this browser only. Deep dives pull live summaries from the Wikipedia API.</p>
+  </div>
+</footer>
+</main>
+
+<!-- ================= DRAWER ================= -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drTitle" aria-hidden="true">
+  <div class="dr-head">
+    <span class="lvl" id="drLvl"></span>
+    <button class="iconbtn" id="drClose" type="button" aria-label="Close lesson">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="dr-body">
+    <h2 id="drTitle"></h2>
+    <p class="dr-field" id="drField"></p>
+
+    <div class="dtabs" role="tablist" aria-label="Lesson sections">
+      <button class="dtab" data-tab="idea" role="tab" aria-selected="true" type="button">The idea</button>
+      <button class="dtab" data-tab="math" role="tab" aria-selected="false" type="button">The maths</button>
+      <button class="dtab" data-tab="real" role="tab" aria-selected="false" type="button">Real world</button>
+      <button class="dtab" data-tab="deep" role="tab" aria-selected="false" type="button">Deep dive</button>
+    </div>
+
+    <div class="panel-tab on" id="tp-idea">
+      <p class="dp" id="dIdea"></p>
+      <button class="btn" id="dLabBtn" type="button" style="margin-bottom:20px">Open the simulation for this lesson →</button>
+    </div>
+
+    <div class="panel-tab" id="tp-math">
+      <div class="eqbox" id="dEq"></div>
+      <p class="note" id="dNote"></p>
+    </div>
+
+    <div class="panel-tab" id="tp-real">
+      <div class="realcard"><h5>Where you actually meet it</h5><p id="dReal"></p></div>
+      <p class="note">Every formula above started as somebody trying to explain something they could see. This is that something.</p>
+    </div>
+
+    <div class="panel-tab" id="tp-deep">
+      <p class="deephint" id="dDeepHint"></p>
+      <div id="dDeep"></div>
+    </div>
+
+    <div class="pathbox">
+      <div>
+        <h5>Builds on</h5>
+        <div class="chiprow" id="dNeed"></div>
+      </div>
+      <div>
+        <h5>Unlocks</h5>
+        <div class="chiprow" id="dUnlock"></div>
+      </div>
+    </div>
+  </div>
+  <div class="dr-foot">
+    <button class="btn" id="drSave" type="button">Save for later</button>
+    <button class="btn" id="drDone" type="button">Mark as learned</button>
+  </div>
+</aside>
+<script src="script.js"></script>
+</body>
+</html>
