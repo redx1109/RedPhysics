@@ -1,16 +1,15 @@
 {
-    "name": "RedPhysics",
-    "short_name": "RedPhysics",
-    "display": "standalone",
-    "orientation": "portrait",
-    "start_url": "/",
-    "theme_color": "#000000",
-    "background_color": "#000000",
-    "icons": [
-        {
-            "src": "favicon.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ]
+  "name": "RedPhysics",
+  "short_name": "RedPhysics",
+  "display": "standalone",
+  "start_url": "/",
+  "theme_color": "#0A0809",
+  "background_color": "#0A0809",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "1254x1254",
+      "type": "image/png"
+    }
+  ]
 }
