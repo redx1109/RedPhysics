@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A0809">
+<meta name="description" content="Structured physics course: 99 lessons, 13 tracks, 8 live simulations.">
+<link rel="apple-touch-icon" href="favicon.png">
 <title>RedPhysics — physics, from the ground up</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +23,9 @@
       <button class="nbtn" id="navSaved" type="button">Saved <span id="savedCount"></span></button>
       <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle colour theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+      </button>
+      <button class="iconbtn" id="bgmBtn" type="button" aria-label="Toggle music" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </button>
     </nav>
   </div>
@@ -43,7 +49,7 @@
   </div>
 
   <div class="wrap hero-in">
-    <p class="eyebrow">A structured course · 13 tracks · 100 lessons</p>
+    <p class="eyebrow">A structured course · 13 tracks · 99 lessons</p>
     <h1>Physics,<br><em>from the ground up.</em></h1>
     <p class="lede">Most courses hand you a formula and hope for the best. RedPhysics shows you the rung below it. Every lesson names the maths it uses and the ideas it stands on — so the next thing to learn is always one you are already ready for, and you can see exactly what it unlocks.</p>
     <div class="cta">
@@ -52,7 +58,7 @@
       <button class="btn" id="savedBtn" type="button">Read what you saved</button>
     </div>
     <div class="stats">
-      <div class="stat"><b data-count="100">0</b><span>Lessons</span></div>
+      <div class="stat"><b data-count="99">0</b><span>Lessons</span></div>
       <div class="stat"><b data-count="13">0</b><span>Tracks</span></div>
       <div class="stat"><b data-count="8">0</b><span>Live simulations</span></div>
       <div class="stat"><b data-count="4">0</b><span>Levels deep</span></div>
@@ -86,7 +92,7 @@
         </svg>
         <b id="ringPct">0%</b>
       </div>
-      <div class="progtext"><b id="progCount">0 of 82</b> lessons learned<br><span id="progSub">Tick a foundation to begin</span></div>
+      <div class="progtext"><b id="progCount">0 of 99</b> lessons learned<br><span id="progSub">Tick a foundation to begin</span></div>
     </div>
 
     <div id="chapters"></div>
@@ -202,6 +208,99 @@
     <button class="btn" id="drDone" type="button">Mark as learned</button>
   </div>
 </aside>
-<script src="script.js"></script>
+<!-- js/core -->
+<script src="js/core/registry.js"></script>
+<script src="js/core/util.js"></script>
+
+<!-- lessons/00-foundations -->
+<script src="lessons/00-foundations/chapter.js"></script>
+<script src="lessons/00-foundations/foundations.js"></script>
+
+<!-- lessons/01-basic -->
+<script src="lessons/01-basic/chapter.js"></script>
+<script src="lessons/01-basic/mechanics.js"></script>
+<script src="lessons/01-basic/fluid-dynamics.js"></script>
+<script src="lessons/01-basic/waves-sound.js"></script>
+<script src="lessons/01-basic/thermodynamics.js"></script>
+<script src="lessons/01-basic/electricity-magnetism.js"></script>
+<script src="lessons/01-basic/optics.js"></script>
+<script src="lessons/01-basic/relativity.js"></script>
+<script src="lessons/01-basic/quantum-mechanics.js"></script>
+<script src="lessons/01-basic/statistical-mechanics.js"></script>
+<script src="lessons/01-basic/condensed-matter.js"></script>
+<script src="lessons/01-basic/nuclear-particle.js"></script>
+<script src="lessons/01-basic/astrophysics-cosmology.js"></script>
+
+<!-- lessons/02-intermediate -->
+<script src="lessons/02-intermediate/chapter.js"></script>
+<script src="lessons/02-intermediate/mechanics.js"></script>
+<script src="lessons/02-intermediate/fluid-dynamics.js"></script>
+<script src="lessons/02-intermediate/waves-sound.js"></script>
+<script src="lessons/02-intermediate/thermodynamics.js"></script>
+<script src="lessons/02-intermediate/electricity-magnetism.js"></script>
+<script src="lessons/02-intermediate/optics.js"></script>
+<script src="lessons/02-intermediate/relativity.js"></script>
+<script src="lessons/02-intermediate/quantum-mechanics.js"></script>
+<script src="lessons/02-intermediate/statistical-mechanics.js"></script>
+<script src="lessons/02-intermediate/condensed-matter.js"></script>
+<script src="lessons/02-intermediate/nuclear-particle.js"></script>
+<script src="lessons/02-intermediate/astrophysics-cosmology.js"></script>
+
+<!-- lessons/03-frontiers-quantum-particles -->
+<script src="lessons/03-frontiers-quantum-particles/chapter.js"></script>
+<script src="lessons/03-frontiers-quantum-particles/quantum-mechanics.js"></script>
+<script src="lessons/03-frontiers-quantum-particles/nuclear-particle.js"></script>
+
+<!-- lessons/04-frontiers-spacetime-cosmos -->
+<script src="lessons/04-frontiers-spacetime-cosmos/chapter.js"></script>
+<script src="lessons/04-frontiers-spacetime-cosmos/relativity.js"></script>
+<script src="lessons/04-frontiers-spacetime-cosmos/astrophysics-cosmology.js"></script>
+
+<!-- lessons/05-frontiers-matter-many-bodies -->
+<script src="lessons/05-frontiers-matter-many-bodies/chapter.js"></script>
+<script src="lessons/05-frontiers-matter-many-bodies/statistical-mechanics.js"></script>
+<script src="lessons/05-frontiers-matter-many-bodies/condensed-matter.js"></script>
+
+<!-- lessons/06-frontiers-classical-fields -->
+<script src="lessons/06-frontiers-classical-fields/chapter.js"></script>
+<script src="lessons/06-frontiers-classical-fields/mechanics.js"></script>
+<script src="lessons/06-frontiers-classical-fields/fluid-dynamics.js"></script>
+<script src="lessons/06-frontiers-classical-fields/waves-sound.js"></script>
+<script src="lessons/06-frontiers-classical-fields/thermodynamics.js"></script>
+<script src="lessons/06-frontiers-classical-fields/electricity-magnetism.js"></script>
+<script src="lessons/06-frontiers-classical-fields/optics.js"></script>
+
+<!-- js/core -->
+<script src="js/core/indexes.js"></script>
+<script src="js/core/state.js"></script>
+
+<!-- js/lab -->
+<script src="js/lab/engine.js"></script>
+
+<!-- labs -->
+<script src="labs/mechanics/projectile.js"></script>
+<script src="labs/electricity-magnetism/circuit.js"></script>
+<script src="labs/thermodynamics/gas.js"></script>
+<script src="labs/mechanics/pendulum.js"></script>
+<script src="labs/waves-sound/waves.js"></script>
+<script src="labs/mechanics/orbit.js"></script>
+<script src="labs/relativity/relativity.js"></script>
+<script src="labs/quantum-mechanics/quantum.js"></script>
+
+<!-- js/lab -->
+<script src="js/lab/lab-ui.js"></script>
+
+<!-- js/path -->
+<script src="js/path/path.js"></script>
+
+<!-- js/ui -->
+<script src="js/ui/save.js"></script>
+<script src="js/ui/drawer.js"></script>
+<script src="js/ui/wiki.js"></script>
+<script src="js/ui/chrome.js"></script>
+<script src="js/ui/bgm.js"></script>
+
+<!-- js/boot.js -->
+<script src="js/boot.js"></script>
 </body>
 </html>
