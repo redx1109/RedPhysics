@@ -18,7 +18,7 @@
   <div class="wrap hdr-in">
     <a class="brand" href="#top"><span class="dot"></span>Red<em>Physics</em></a>
     <nav>
-      <button class="nbtn" data-go="pathsec" type="button">The path</button>
+      <a class="nbtn" href="branches.html" style="text-decoration:none">Branches</a>
       <button class="nbtn" data-go="labsec" type="button">Lab bench</button>
       <button class="nbtn" id="navSaved" type="button">Saved <span id="savedCount"></span></button>
       <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle colour theme">
@@ -53,7 +53,7 @@
     <h1>Physics,<br><em>from the ground up.</em></h1>
     <p class="lede">Most courses hand you a formula and hope for the best. RedPhysics shows you the rung below it. Every lesson names the maths it uses and the ideas it stands on — so the next thing to learn is always one you are already ready for, and you can see exactly what it unlocks.</p>
     <div class="cta">
-      <button class="btn primary" id="startBtn" type="button">Start at the bottom</button>
+      <button class="btn primary" id="startBtn" type="button">Begin your Journey</button>
       <button class="btn" id="labBtn" type="button">Open the lab bench</button>
       <button class="btn" id="savedBtn" type="button">Read what you saved</button>
     </div>
@@ -65,40 +65,18 @@
     </div>
   </div>
 </section>
-
-<!-- ================= PATH ================= -->
+<!-- ================= BRANCHES TEASER ================= -->
 <section class="blk" id="pathsec">
   <div class="wrap">
     <div class="sec-head rv">
       <div>
         <p class="kicker">The curriculum</p>
-        <h2>The path</h2>
-        <p>Read it bottom-up. Grey dot means waiting on a prerequisite. Hover any lesson to light up everything it depends on and everything it unlocks.</p>
+        <h2>13 branches. 99 lessons.</h2>
+        <p>Physics is a tree, not a list. Each branch is its own lesson tree — open one to see what leads to what and which other branches it borrows from. <a href="branches.html" style="color:var(--red-2);text-decoration:underline;text-underline-offset:3px">Or browse all branches →</a></p>
       </div>
     </div>
-
-    <div class="filters">
-      <div class="chiprow" id="levelChips" role="group" aria-label="Filter by level"></div>
-      <div class="chiprow" id="fieldChips" role="group" aria-label="Filter by track"></div>
-    </div>
-
-    <div class="nextup rv" id="nextup"></div>
-
-    <div class="progwrap">
-      <div class="ring">
-        <svg width="64" height="64" viewBox="0 0 64 64">
-          <circle class="track" cx="32" cy="32" r="27"/>
-          <circle class="fill" id="ringFill" cx="32" cy="32" r="27" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
-        </svg>
-        <b id="ringPct">0%</b>
-      </div>
-      <div class="progtext"><b id="progCount">0 of 99</b> lessons learned<br><span id="progSub">Tick a foundation to begin</span></div>
-    </div>
-
-    <div id="chapters"></div>
   </div>
 </section>
-
 <!-- ================= LAB ================= -->
 <section class="blk" id="labsec">
   <div class="wrap">
@@ -301,6 +279,40 @@
 <script src="js/ui/bgm.js"></script>
 
 <!-- js/boot.js -->
-<script src="js/boot.js"></script>
+<script src="js/boot.js"></script> 
+<script>
+(function(){
+  var K="rp.last", NAMES=["openLesson","openDrawer","showLesson","showDrawer","open"];
+  NAMES.forEach(function(n){var f=window[n];if(typeof f==="function")window[n]=function(id){
+    if(id)try{localStorage.setItem(K,id)}catch(e){}
+    return f.apply(this,arguments);
+  }});
+  function open(id){
+    for(var i=0;i<NAMES.length;i++){var f=window[NAMES[i]];
+      if(typeof f==="function"){try{f(id);return}catch(e){}}}
+    if(window.Drawer&&Drawer.open)try{Drawer.open(id);return}catch(e){}
+  }
+  function fromHash(){var m=location.hash.match(/^#lesson=(.+)$/);if(m)open(decodeURIComponent(m[1]))}
+  function firstId(){var L=window.LESSONS||[];for(var i=0;i<L.length;i++)if(!(L[i].need||[]).length)return L[i].id;return L[0]&&L[0].id}
+  function valid(id){return !!id&&(window.LESSONS||[]).some(function(l){return l.id===id})}
+  function wire(){
+    var o=document.getElementById("startBtn");if(!o)return;
+    var b=o.cloneNode(true);o.parentNode.replaceChild(b,o);
+    var last=null;try{last=localStorage.getItem(K)}catch(e){}
+    if(valid(last)){
+      b.textContent="Continue";
+      b.onclick=function(){location.hash="lesson="+encodeURIComponent(last)};
+    }else{
+      b.textContent="Begin your Journey";
+      b.onclick=function(){var id=firstId();
+        if(id)location.hash="lesson="+encodeURIComponent(id);
+        else location.href="branches.html#foundations"};
+    }
+  }
+  function go(){fromHash();wire()}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();
+  addEventListener("hashchange",fromHash);
+})();
+</script>
 </body>
 </html>
