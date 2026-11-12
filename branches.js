@@ -1,9 +1,6 @@
 "use strict";
 /* =========================================================
    BRANCHES PAGE
-   #            -> all branches
-   #mechanics   -> the lesson tree of one branch
-   Uses the same LESSONS data and progress (rp.done) as index.html.
    ========================================================= */
 (function(){
 
@@ -16,11 +13,11 @@ var COL={
 var ORDER=["Foundations","Mechanics","Fluid Dynamics","Waves & Sound","Thermodynamics","Electricity & Magnetism",
   "Optics","Relativity","Quantum Mechanics","Statistical Mechanics","Condensed Matter","Nuclear & Particle","Astrophysics & Cosmology"];
 
-/* node box and spacing, in px at zoom 1 */
 var NW=224,NH=88,GX=44,GY=88,PAD=56;
 
 var view=$("#bview");
 var B=[],BY={};
+var currentFit = null; // <--- ADDED: holds the fit function for resize events
 
 function slug(s){return s.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
 function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
@@ -107,7 +104,7 @@ function layout(b){
   var layer={};
   function lay(id){
     if(layer[id]!=null)return layer[id];
-    layer[id]=0; /* guards against a prerequisite loop */
+    layer[id]=0;
     var m=-1;
     (byId[id].need||[]).forEach(function(k){if(b.ids[k])m=Math.max(m,lay(k))});
     return(layer[id]=m+1);
@@ -213,7 +210,6 @@ function renderBranch(b){
     scale.appendChild(a);nodes.push(a);
   });
 
-  /* highlight a lesson's whole prerequisite chain and everything it unlocks */
   function hl(id){
     var A=ANC[id]||{},D=DES[id]||{};
     var inA=function(i){return i===id||!!A[i]},inD=function(i){return i===id||!!D[i]};
@@ -242,16 +238,23 @@ function renderBranch(b){
     size.style.width=Math.round(L.W*Z)+"px";size.style.height=Math.round(L.H*Z)+"px";
   }
   function setZoom(z){
-    z=Math.min(1.6,Math.max(.4,z));
+    z=Math.min(1.6,Math.max(.2,z)); // allow zoom out to 0.2
     var cx=(tree.scrollLeft+tree.clientWidth/2)/Z,cy=(tree.scrollTop+tree.clientHeight/2)/Z;
     Z=z;apply();
     tree.scrollLeft=cx*Z-tree.clientWidth/2;tree.scrollTop=cy*Z-tree.clientHeight/2;
   }
+  
+  // FIXED: fit function
   function fit(){
-    Z=Math.min(1,Math.max(.5,(tree.clientWidth-8)/L.W));
+    if (!tree.clientWidth || !tree.clientHeight) return;
+    Z = Math.min(1, Math.max(.2, (tree.clientWidth - 16) / L.W));
     apply();
-    tree.scrollLeft=(size.offsetWidth-tree.clientWidth)/2;tree.scrollTop=0;
+    // Center both horizontally and vertically
+    tree.scrollLeft = (size.offsetWidth - tree.clientWidth) / 2;
+    tree.scrollTop = (size.offsetHeight - tree.clientHeight) / 2;
   }
+  currentFit = fit; // expose for resize listener
+
   $("#zIn").addEventListener("click",function(){setZoom(Z*1.2)});
   $("#zOut").addEventListener("click",function(){setZoom(Z/1.2)});
   $("#zFit").addEventListener("click",fit);
@@ -279,13 +282,18 @@ function renderBranch(b){
   tree.addEventListener("pointercancel",end);
   tree.addEventListener("click",function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
 
-  fit();
-  /* open on the first lesson you can learn now, if it is off-screen */
-  var next=nodes.filter(function(n){return n.classList.contains("ready")})[0];
-  if(next){
-    var ny=(parseFloat(next.style.top)+NH/2)*Z;
-    if(ny>tree.clientHeight-80)tree.scrollTop=Math.max(0,ny-tree.clientHeight/2);
-  }
+  // FIXED: run fit, then scroll to next lesson
+  setTimeout(function() {
+    fit();
+    var next=nodes.filter(function(n){return n.classList.contains("ready")})[0];
+    if(next){
+      var ny=(parseFloat(next.style.top)+NH/2)*Z;
+      // Only scroll if the next lesson is off-screen
+      if(ny > tree.scrollTop + tree.clientHeight - 80 || ny < tree.scrollTop + 80) {
+        tree.scrollTop = Math.max(0, ny - tree.clientHeight/2);
+      }
+    }
+  }, 150);
 }
 
 /* ---------- routing ---------- */
@@ -304,11 +312,19 @@ addEventListener("hashchange",route);
 addEventListener("pageshow",function(e){if(e.persisted)reload()});
 addEventListener("storage",function(e){if(e.key==="rp.done")reload()});
 
-/* theme (same key as the main page) */
+/* theme */
 $("#themeBtn").addEventListener("click",function(){
   var r=document.documentElement,next=r.getAttribute("data-theme")==="light"?"dark":"light";
   r.setAttribute("data-theme",next);
   try{localStorage.setItem("rp.theme",next)}catch(e){}
+});
+
+// FIXED: resize listeners inside the IIFE, using currentFit
+window.addEventListener('resize', function() {
+  if (currentFit) currentFit();
+});
+window.addEventListener('orientationchange', function() {
+  setTimeout(function() { if (currentFit) currentFit(); }, 250);
 });
 
 })();
