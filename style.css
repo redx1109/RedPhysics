@@ -258,11 +258,10 @@ footer p{max-width:70ch;margin:0 0 10px}
   opacity:0;pointer-events:none;transition:opacity .3s;z-index:90}
 .scrim.on{opacity:1;pointer-events:auto}
 .drawer{
-  position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);z-index:100;
-  background:var(--bg-2);border-left:1px solid var(--line-2);
+  position:fixed;inset:0;z-index:100;
+  background:var(--bg-2);
   display:flex;flex-direction:column;
-  transform:translateX(102%);transition:transform .38s cubic-bezier(.32,.72,0,1);
-  box-shadow:-30px 0 80px -30px rgba(0,0,0,.8);
+  transform:translateY(102%);transition:transform .38s cubic-bezier(.32,.72,0,1);
   padding-top:env(safe-area-inset-top);
 }
 .drawer.on{transform:none}
@@ -350,7 +349,6 @@ footer p{max-width:70ch;margin:0 0 10px}
 
 /* ============ MOBILE + MUSIC ============ */
 .iconbtn.on{color:var(--red);border-color:var(--red)}
-.drawer:not(.on){box-shadow:none} /* the closed drawer's shadow was bleeding onto the right edge of the screen */
 @media (max-width:640px){
   .formula{position:static;max-width:none;text-align:left;border-radius:0;border-top:1px solid var(--line);padding:7px 12px} /* was overlapping the canvas text */
   .hdr nav{flex-wrap:nowrap;gap:4px}
