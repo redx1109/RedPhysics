@@ -197,7 +197,7 @@ function renderBranch(b){
     var st=done[l.id]?"done":unmet===0?"ready":"locked";
     var foot=done[l.id]?"Learned ✓":!(l.need||[]).length?"Entry point":unmet?"Needs "+unmet:"Ready";
     var a=h("a","bnode "+st);
-    a.href="index.html#lesson="+encodeURIComponent(l.id);
+    a.href="#lesson="+encodeURIComponent(l.id);
     a.dataset.id=l.id;
     a.style.left=L.pos[l.id].x+"px";a.style.top=L.pos[l.id].y+"px";
     a.setAttribute("aria-label",l.t+" — "+foot);
