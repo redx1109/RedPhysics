@@ -22,7 +22,7 @@
     <nav>
       <a class="nbtn" href="index.html">Home</a>
       <a class="nbtn on" href="branches.html" aria-current="page">Branches</a>
-      <a class="nbtn hide-s" href="index.html#labsec">Lab bench</a>
+      <a class="nbtn hide-s" href="lab.html">Lab bench</a>
       <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle colour theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
       </button>
@@ -32,7 +32,52 @@
 
 <main id="bview"></main>
 
-<!-- same data files as index.html (keep these in step when you add a lesson file) -->
+<!-- ============ DRAWER ============ -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drTitle" aria-hidden="true">
+  <div class="dr-head">
+    <span class="lvl" id="drLvl"></span>
+    <button class="iconbtn" id="drClose" type="button" aria-label="Close lesson">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="dr-body">
+    <h2 id="drTitle"></h2>
+    <p class="dr-field" id="drField"></p>
+    <div class="dtabs" role="tablist" aria-label="Lesson sections">
+      <button class="dtab" data-tab="idea" role="tab" aria-selected="true" type="button">The idea</button>
+      <button class="dtab" data-tab="math" role="tab" aria-selected="false" type="button">The maths</button>
+      <button class="dtab" data-tab="real" role="tab" aria-selected="false" type="button">Real world</button>
+      <button class="dtab" data-tab="deep" role="tab" aria-selected="false" type="button">Deep dive</button>
+    </div>
+    <div class="panel-tab on" id="tp-idea">
+      <p class="dp" id="dIdea"></p>
+      <button class="btn" id="dLabBtn" type="button" style="margin-bottom:20px">Open the simulation for this lesson →</button>
+    </div>
+    <div class="panel-tab" id="tp-math">
+      <div class="eqbox" id="dEq"></div>
+      <p class="note" id="dNote"></p>
+    </div>
+    <div class="panel-tab" id="tp-real">
+      <div class="realcard"><h5>Where you actually meet it</h5><p id="dReal"></p></div>
+      <p class="note">Every formula above started as somebody trying to explain something they could see. This is that something.</p>
+    </div>
+    <div class="panel-tab" id="tp-deep">
+      <p class="deephint" id="dDeepHint"></p>
+      <div id="dDeep"></div>
+    </div>
+    <div class="pathbox">
+      <div><h5>Builds on</h5><div class="chiprow" id="dNeed"></div></div>
+      <div><h5>Unlocks</h5><div class="chiprow" id="dUnlock"></div></div>
+    </div>
+  </div>
+  <div class="dr-foot">
+    <button class="btn" id="drSave" type="button">Save for later</button>
+    <button class="btn" id="drDone" type="button">Mark as learned</button>
+  </div>
+</aside>
+
+<!-- ============ DATA (unchanged) ============ -->
 <script src="js/core/registry.js"></script>
 <script src="js/core/util.js"></script>
 <script src="lessons/00-foundations/chapter.js"></script>
@@ -82,6 +127,124 @@
 <script src="js/core/indexes.js"></script>
 <script src="js/core/state.js"></script>
 
+<!-- ============ GLOBALS + STUB: must run BEFORE ui scripts ============ -->
+<script>
+window.fSaved        = false;
+window.pips          = window.pips || function(){ return ""; };
+window.fLevel        = -1;
+window.fField        = "all";
+window.nodeCb        = {};
+window.renderChips   = function(){};
+window.renderPath    = function(){};
+window.updateProgress= function(){};
+window.readCols      = function(){};
+window.nextLesson    = function(){ return null; };
+window.openLab       = function(){};
+window.el            = window.el || function(tag, cls, parent){
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (parent) parent.appendChild(n);
+  return n;
+};
+</script>
+<script>
+(function(){
+  // index.html-only elements. Drawer elements now exist on this page for real.
+  var GONE = {levelChips:1,fieldChips:1,nextup:1,ringFill:1,progCount:1,progSub:1,
+              chapters:1,pathsec:1,labsec:1,labBtn:1,tabs:1,labmount:1,cv:1,
+              formula:1,labctx:1,lvl:1,ltitle:1,blurb:1,controls:1,btns:1,
+              readouts:1,ltry:1,startBtn:1,savedBtn:1,savedCount:1,navSaved:1,
+              bgmBtn:1,scrollbar:1};
+  var stubs = {};
+  function makeStub(){
+    return {
+      addEventListener:function(){}, removeEventListener:function(){},
+      classList:{add:function(){},remove:function(){},toggle:function(){},contains:function(){return false}},
+      style:{}, dataset:{}, setAttribute:function(){}, getAttribute:function(){return null},
+      appendChild:function(){}, append:function(){}, remove:function(){},
+      querySelector:function(){return null}, querySelectorAll:function(){return []},
+      innerHTML:"", textContent:"", children:[], childNodes:[],
+      focus:function(){}, blur:function(){}, scrollIntoView:function(){},
+      getBoundingClientRect:function(){return {top:0,left:0,width:0,height:0,bottom:0,right:0}},
+      offsetTop:0, offsetHeight:0, offsetWidth:0, offsetLeft:0
+    };
+  }
+  var orig = document.getElementById;
+  document.getElementById = function(id){
+    var e = orig.call(document, id);
+    if (e) return e;
+    if (!GONE[id]) return null;
+    return stubs[id] || (stubs[id] = makeStub());
+  };
+  var origQS = document.querySelector;
+  document.querySelector = function(sel){
+    var e = origQS.call(document, sel);
+    if (e) return e;
+    var m = sel.match(/^#([\w-]+)$/);
+    return m && GONE[m[1]] ? (stubs[m[1]] || (stubs[m[1]] = makeStub())) : null;
+  };
+})();
+</script>
+
+<!-- ============ UI (shared with index.html) ============ -->
+<script src="js/ui/save.js"></script>
+<script src="js/ui/drawer.js"></script>
+<script src="js/ui/wiki.js"></script>
+
+<!-- ============ PAGE ============ -->
 <script src="branches.js"></script>
+
+<!-- ============ Open lessons in place ============ -->
+<script>
+(function(){
+  function openInPlace(id){
+    if (typeof openLesson === "function") openLesson(id);
+    else if (window.Drawer && typeof Drawer.open === "function") Drawer.open(id);
+    try{
+      var t = "#lesson=" + encodeURIComponent(id);
+      if (location.hash !== t) history.replaceState(null, "", location.pathname + location.search + t);
+    }catch(e){}
+  }
+
+  // Intercept clicks on index.html#lesson=… or #lesson=… links produced by branches.js
+  document.addEventListener("click", function(e){
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    var m = href.match(/(?:^|\/)index\.html(?:\?[^#]*)?#lesson=([^&]+)/)
+          || href.match(/^#lesson=([^&]+)/);
+    if (!m) return;
+    var id = decodeURIComponent(m[1]);
+    if (!window.byId || !byId[id]) return;   // unknown lesson → let default run
+    e.preventDefault();
+    openInPlace(id);
+  });
+
+  function isReload(){
+    try{
+      var n = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+      return !!(n && n.type === "reload");
+    }catch(e){ return false; }
+  }
+
+  function fromHash(){
+    var m = location.hash.match(/^#lesson=(.+)$/);
+    if (!m) return;
+    // Don't reopen on a plain refresh — that was the complaint about index.html.
+    if (isReload()){
+      try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+      return;
+    }
+    var id = decodeURIComponent(m[1]);
+    if (window.byId && byId[id]) openInPlace(id);
+    else try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fromHash);
+  else fromHash();
+  addEventListener("hashchange", fromHash);
+})();
+</script>
 </body>
 </html>
