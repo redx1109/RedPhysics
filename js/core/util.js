@@ -8,3 +8,10 @@ var f=function(x,d){return Number(x).toFixed(d==null?2:d)};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var PLANETS=[["Earth",9.81],["Moon",1.62],["Mars",3.71],["Jupiter",24.79]];
 var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function el(tag, cls, parent){
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (parent) parent.appendChild(n);
+  return n;
+}
