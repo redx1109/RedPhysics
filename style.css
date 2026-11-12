@@ -374,3 +374,76 @@ footer p{max-width:70ch;margin:0 0 10px}
   .hdr .nbtn[href="lab.html"]{display:none}      /* index */
   .bpage .hdr .nbtn[href="index.html"]{display:none} /* branches */
 }
+
+/* =========================================
+   MOBILE NAV & FAB
+   ========================================= */
+.mobile-nav {
+  display: none; /* Hidden on desktop */
+}
+
+.fab-music {
+  position: fixed;
+  bottom: 80px; /* Sits above the navbar */
+  left: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s, background 0.2s;
+}
+.fab-music:active { transform: scale(0.9); }
+.fab-music[aria-pressed="true"] {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+@media (max-width: 768px) {
+  body { padding-bottom: 72px; } /* Prevent content from hiding behind navbar */
+  .hdr nav .nbtn { display: none; } /* Hide text links in top header */
+  .hdr nav #themeBtn { display: flex; }
+  
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(10, 8, 9, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .mnav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 10px;
+    font-family: var(--mono);
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    transition: color 0.2s;
+  }
+  .mnav-btn.on, .mnav-btn:active {
+    color: var(--red);
+  }
+}
