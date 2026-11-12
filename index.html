@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0A0809">
 <meta name="description" content="Structured physics course: 99 lessons, 13 tracks, 8 live simulations.">
 <link rel="apple-touch-icon" href="favicon.png">
+<link rel="icon" href="favicon.png">
 <title>RedPhysics — physics, from the ground up</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +20,7 @@
     <a class="brand" href="#top"><span class="dot"></span>Red<em>Physics</em></a>
     <nav>
       <a class="nbtn" href="branches.html" style="text-decoration:none">Branches</a>
-      <button class="nbtn" data-go="labsec" type="button">Lab bench</button>
+      <a class="nbtn" href="lab.html" style="text-decoration:none">Lab bench</a>
       <button class="nbtn" id="navSaved" type="button">Saved <span id="savedCount"></span></button>
       <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle colour theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
@@ -54,7 +55,7 @@
     <p class="lede">Most courses hand you a formula and hope for the best. RedPhysics shows you the rung below it. Every lesson names the maths it uses and the ideas it stands on — so the next thing to learn is always one you are already ready for, and you can see exactly what it unlocks.</p>
     <div class="cta">
       <button class="btn primary" id="startBtn" type="button">Begin your Journey</button>
-      <button class="btn" id="labBtn" type="button">Open the lab bench</button>
+      <a class="btn" href="lab.html" style="text-decoration:none;display:inline-block">Open the lab bench</a>
       <button class="btn" id="savedBtn" type="button">Read what you saved</button>
     </div>
     <div class="stats">
@@ -65,48 +66,6 @@
     </div>
   </div>
 </section>
-<!-- ================= BRANCHES TEASER ================= -->
-<section class="blk" id="pathsec">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div>
-        <p class="kicker">The curriculum</p>
-        <h2>13 branches. 99 lessons.</h2>
-        <p>Physics is a tree, not a list. Each branch is its own lesson tree — open one to see what leads to what and which other branches it borrows from. <a href="branches.html" style="color:var(--red-2);text-decoration:underline;text-underline-offset:3px">Or browse all branches →</a></p>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ================= LAB ================= -->
-<section class="blk" id="labsec">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div>
-        <p class="kicker">The lab bench</p>
-        <h2>Push on it</h2>
-        <p>Eight simulations. Open one from a lesson and it arrives with the equation already on screen.</p>
-      </div>
-    </div>
-    <div class="tabs" id="tabs" role="tablist" aria-label="Choose a lab"></div>
-    <div class="lab" id="labmount">
-      <div class="stage">
-        <canvas id="cv" role="img" aria-label="Interactive simulation"></canvas>
-        <div class="formula" id="formula"></div>
-      </div>
-      <div class="panel">
-        <div class="labctx" id="labctx"></div>
-        <span class="lvl" id="lvl"></span>
-        <h3 id="ltitle"></h3>
-        <p id="blurb"></p>
-        <div id="controls"></div>
-        <div class="btns" id="btns"></div>
-        <div class="readouts" id="readouts"></div>
-        <p class="try"><b>Try this</b><span id="ltry"></span></p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= CONSTANTS ================= -->
 <section class="blk">
   <div class="wrap">
@@ -121,13 +80,6 @@
     </div>
   </div>
 </section>
-
-<footer>
-  <div class="wrap">
-    <p>Simulations use simplified models: no air drag, no collisions between gas particles, point masses. Good for intuition, not for homework answers.</p>
-    <p>Progress and saved lessons are stored in this browser only. Deep dives pull live summaries from the Wikipedia API.</p>
-  </div>
-</footer>
 </main>
 
 <!-- ================= DRAWER ================= -->
@@ -252,61 +204,117 @@
 <script src="js/core/indexes.js"></script>
 <script src="js/core/state.js"></script>
 
-<!-- js/lab -->
-<script src="js/lab/engine.js"></script>
-
-<!-- labs -->
-<script src="labs/mechanics/projectile.js"></script>
-<script src="labs/electricity-magnetism/circuit.js"></script>
-<script src="labs/thermodynamics/gas.js"></script>
-<script src="labs/mechanics/pendulum.js"></script>
-<script src="labs/waves-sound/waves.js"></script>
-<script src="labs/mechanics/orbit.js"></script>
-<script src="labs/relativity/relativity.js"></script>
-<script src="labs/quantum-mechanics/quantum.js"></script>
-
-<!-- js/lab -->
-<script src="js/lab/lab-ui.js"></script>
-
-<!-- js/path -->
-<script src="js/path/path.js"></script>
+<script>
+/* Globals that used to live in path.js / engine.js / lab-ui.js.
+   These pages no longer load those files, so declare them up front. */
+window.fSaved        = false;
+window.pips = window.pips || function(){ return ""; };
+window.fLevel        = -1;
+window.fField        = "all";
+window.nodeCb        = {};
+window.renderChips   = function(){};
+window.renderPath    = function(){};
+window.updateProgress= function(){};
+window.readCols      = function(){};
+window.nextLesson    = function(){ return null; };
+window.openLab       = function(){};
+</script>
 
 <!-- js/ui -->
 <script src="js/ui/save.js"></script>
 <script src="js/ui/drawer.js"></script>
 <script src="js/ui/wiki.js"></script>
+<script>
+/* Null-safe lookups for elements that moved to branches.html / lab.html */
+(function(){
+  var GONE = {levelChips:1,fieldChips:1,nextup:1,ringFill:1,progCount:1,progSub:1,
+              chapters:1,pathsec:1,labsec:1,labBtn:1,tabs:1,labmount:1,cv:1,
+              formula:1,labctx:1,lvl:1,ltitle:1,blurb:1,controls:1,btns:1,
+              readouts:1,ltry:1};
+  var stub = {
+    addEventListener:function(){}, removeEventListener:function(){},
+    classList:{add:function(){},remove:function(){},toggle:function(){},contains:function(){return false}},
+    style:{}, dataset:{}, setAttribute:function(){}, getAttribute:function(){return null},
+    appendChild:function(){}, append:function(){}, remove:function(){},
+    querySelector:function(){return null}, querySelectorAll:function(){return []},
+    innerHTML:"", textContent:"", children:[], childNodes:[],
+    focus:function(){}, blur:function(){}, scrollIntoView:function(){},
+    getBoundingClientRect:function(){return {top:0,left:0,width:0,height:0,bottom:0,right:0}},
+    offsetTop:0, offsetHeight:0, offsetWidth:0, offsetLeft:0
+  };
+  var orig = document.getElementById;
+  document.getElementById = function(id){
+    var el = orig.call(document, id);
+    if (el) return el;
+    return GONE[id] ? stub : null;
+  };
+  var origQS = document.querySelector;
+  document.querySelector = function(sel){
+    var el = origQS.call(document, sel);
+    if (el) return el;
+    var m = sel.match(/^#([\w-]+)$/);
+    return m && GONE[m[1]] ? stub : null;
+  };
+})();
+</script>
 <script src="js/ui/chrome.js"></script>
 <script src="js/ui/bgm.js"></script>
 
-<!-- js/boot.js -->
-<script src="js/boot.js"></script> 
 <script>
 (function(){
   var K="rp.last", NAMES=["openLesson","openDrawer","showLesson","showDrawer","open"];
-  NAMES.forEach(function(n){var f=window[n];if(typeof f==="function")window[n]=function(id){
-    if(id)try{localStorage.setItem(K,id)}catch(e){}
-    return f.apply(this,arguments);
-  }});
+  NAMES.forEach(function(n){
+    if(n==="open") return;                 /* never wrap native window.open */
+    var f=window[n];
+    if(typeof f==="function") window[n]=function(id){
+      if(id && (window.LESSONS||[]).some(function(l){return l.id===id}))
+        try{localStorage.setItem(K,id)}catch(e){}
+      return f.apply(this,arguments);
+    };
+  });
   function open(id){
-    for(var i=0;i<NAMES.length;i++){var f=window[NAMES[i]];
-      if(typeof f==="function"){try{f(id);return}catch(e){}}}
-    if(window.Drawer&&Drawer.open)try{Drawer.open(id);return}catch(e){}
+    for(var i=0;i<NAMES.length;i++){
+      var n = NAMES[i];
+      if(n === "open") continue;              /* don't touch window.open */
+      var f = window[n];
+      if(typeof f === "function"){
+        try { f(id); return; }
+        catch(e){ console.error("[open → "+n+"] threw:", e); }
+      }
+    }
+    if(window.Drawer && typeof Drawer.open === "function"){
+      try{ Drawer.open(id); return; }catch(e){ console.error("[open → Drawer.open] threw:", e); }
+    }
+    console.warn("[open] no opener succeeded for id:", id);
   }
-  function fromHash(){var m=location.hash.match(/^#lesson=(.+)$/);if(m)open(decodeURIComponent(m[1]))}
+  function fromHash(){
+    var m=location.hash.match(/^#lesson=(.+)$/);
+    if(!m) return;
+    var id=decodeURIComponent(m[1]);
+    if(valid(id)) open(id);
+    else try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+  }
   function firstId(){var L=window.LESSONS||[];for(var i=0;i<L.length;i++)if(!(L[i].need||[]).length)return L[i].id;return L[0]&&L[0].id}
   function valid(id){return !!id&&(window.LESSONS||[]).some(function(l){return l.id===id})}
   function wire(){
     var o=document.getElementById("startBtn");if(!o)return;
     var b=o.cloneNode(true);o.parentNode.replaceChild(b,o);
     var last=null;try{last=localStorage.getItem(K)}catch(e){}
+
+    function goTo(id){
+      if(!id) return false;
+      open(id);
+      return true;
+    }
+
     if(valid(last)){
-      b.textContent="Continue";
-      b.onclick=function(){location.hash="lesson="+encodeURIComponent(last)};
-    }else{
-      b.textContent="Begin your Journey";
-      b.onclick=function(){var id=firstId();
-        if(id)location.hash="lesson="+encodeURIComponent(id);
-        else location.href="branches.html#foundations"};
+      b.textContent = "Continue";
+      b.onclick = function(){ goTo(last); };
+    } else {
+      b.textContent = "Begin your Journey";
+      b.onclick = function(){
+        if(!goTo(firstId())) location.href = "branches.html#foundations";
+      };
     }
   }
   function go(){fromHash();wire()}
