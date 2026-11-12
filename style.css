@@ -362,3 +362,15 @@ footer p{max-width:70ch;margin:0 0 10px}
 @media (hover:none){
   .node:hover .card,.btn:hover,.tab:hover{transform:none}
 }
+
+@media (max-width:640px){
+  .hdr-in{height:auto;min-height:56px;padding-block:8px;gap:8px}
+  .hdr .brand{flex:0 0 auto;font-size:20px}
+  .hdr nav{flex:1 1 auto;flex-wrap:wrap;justify-content:flex-end;min-width:0;gap:4px}
+  .hdr .nbtn{padding:6px 8px;font-size:12px}
+  .hdr .iconbtn{width:34px;height:34px}
+}
+@media (max-width:420px){
+  .hdr .nbtn[href="lab.html"]{display:none}      /* index */
+  .bpage .hdr .nbtn[href="index.html"]{display:none} /* branches */
+}
