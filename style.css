@@ -426,7 +426,7 @@ footer p{max-width:70ch;margin:0 0 10px}
     -webkit-backdrop-filter: blur(18px) saturate(160%);
     border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
     border-radius: 999px;
-    box-shadow: 0 12px 32px -10px rgba(0,0,0,.55);
+    box-shadow: 0 12px 32px -10px rgba(0,0,0,.65);
     z-index: 1000;
   }
   .mnav-btn {
@@ -446,8 +446,7 @@ footer p{max-width:70ch;margin:0 0 10px}
     transition: color .2s, background .2s, transform .15s;
   }
   .mnav-btn.on {
-    color: var(--red);
-    background: color-mix(in srgb, var(--red) 16%, transparent);
+    background: #e50914;
   }
   .mnav-btn:active { transform: scale(.94); }
 }
