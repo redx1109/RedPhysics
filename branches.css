@@ -92,18 +92,23 @@ body.treeview main{flex:1;min-height:0;display:flex;flex-direction:column}
   .brel{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
   .bhead h1 .bdot{width:12px;height:12px}
 }
+
 @media (prefers-reduced-motion:reduce){
   .bcard,.bbar i,.tedge,.bnode{transition:none}
   .bcard:hover{transform:none}
 }
 
-@media (max-width: 768px) {
-  /* Force the tree container to fill the screen, minus header and bottom nav */
-  #cv, .tree-container, #graph, svg { 
-    width: 100% !important;
-    height: calc(100dvh - 120px) !important; /* 56px header + 64px nav */
-    max-height: calc(100dvh - 120px) !important;
-    margin-top: 0 !important;
-    overflow: hidden !important;
-  }
+body.treeview .bhead{width:100%;min-width:0;overflow:hidden}
+.bmeta,.bprogbox{min-width:0;max-width:100%}
+.brel{
+  max-width:100%;
+  min-width:0;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.brel::-webkit-scrollbar{display:none}
+@media (max-width:768px){
+  .bpage .hdr{display:none}
 }
